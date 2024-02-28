@@ -4,14 +4,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections; // это для ObservableList
 
-import com.example.jfx_lrs.MyApplication;
 import javafx.stage.Stage;
+
+///MainController contain event handlers and bound with main-view.fxml, using fx:id names
 
 public class MainController {
 
     private boolean tState = false; // переменная статуса
     private double covR = 1;
-
     @FXML
     private ToggleButton toggle_state;
     @FXML
@@ -26,8 +26,6 @@ public class MainController {
     private TextField name_text;
     @FXML
     private TextArea description_text;
-    @FXML
-    private Stage st;
 
     @FXML
     /**
@@ -45,6 +43,10 @@ public class MainController {
         covR = 1;
         label_slider.setText(Double.toString(covR));
     }
+    private LongRangSensorClass outerInstance = new LongRangSensorClass();
+    @FXML
+    private Stage st;    private LongRangSensorClass.LRS Sensor = outerInstance.new LRS("", "", (float)covR); // явное преобразование из double, иначе никак
+
     @FXML
     private void switchState() {
         tState = !tState;
@@ -71,11 +73,12 @@ public class MainController {
      * Сохраняет в файл
      */
     private void saveIntoFile() {
-        LongRangSensorClass outerInstance = new LongRangSensorClass();
-        LongRangSensorClass.LRS Sensor = outerInstance.new LRS(name_text.getText(), sensor_type_chb.getValue(), (float)covR); // явное преобразование из double, иначе никак
 
+        Sensor.setSensorName(name_text.getText());
         Sensor.setState(tState);
         Sensor.setDescription(description_text.getText());
+        Sensor.setSensorType(sensor_type_chb.getValue());
+        Sensor.setCoverageRadius((float)covR);
 
 
         LongRangSensorClass.saveToFile(Sensor.toString(), st);
@@ -96,18 +99,27 @@ public class MainController {
     /**
      * Меняет дальность через слайдер
      */
-    private void  sliderDrag(){
+    private void sliderDrag() {
         covR = slider.getValue();
-        label_slider.setText(Double.toString(covR)); //сделать try
-
+        try {
+            label_slider.setText(Double.toString(covR));
+        } catch (Exception e) {
+            System.err.println("Ошибка при установке текста на метке: " + e.getMessage());
+        }
     }
+
 
     @FXML
     /**
      * Меняет дальность через текст
      */
-    private void keyTyped(){
-        covR = Double.parseDouble(label_slider.getText());
-        slider.setValue(covR);
+    private void keyTyped() {
+        try {
+            covR = Double.parseDouble(label_slider.getText());
+            slider.setValue(covR);
+        } catch (NumberFormatException e) {
+            System.err.println("Ошибка при парсинге текста в Double: " + e.getMessage());
+        }
     }
+
 }

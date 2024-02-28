@@ -35,7 +35,7 @@ public class LongRangSensorClass {
         public LRS(String sensor, String type, float rad) {
             sensorName = sensor;
             sensorType = type;
-            coverageRadius = rad;
+            setCoverageRadius(rad);
         }
 
         // Методы для получения и установки полей LRS
@@ -66,23 +66,23 @@ public class LongRangSensorClass {
 
         public String getSensorName() {
             return sensorName;
-        }
+        } // получение названия сенсора
 
         public String getSensorType() {
             return sensorType;
-        }
+        } // получение типа сенсора
 
         public String getDescription() {
             return description;
-        }
+        } // получение описания датчика
 
         public boolean getState() {
             return onlineState;
-        }
+        } // получение статуса
 
         public float getCoverageRadius() {
             return coverageRadius;
-        }
+        } // получить радиус покрытия
 
         /**
          * Метод для переключения онлайн-статуса датчика.
@@ -96,7 +96,7 @@ public class LongRangSensorClass {
          *
          * @return Строковое представление объекта LRS.
          */
-        @Override
+        @Override //из-за базового класса object, от которого всякое наследуется в java
         public String toString() {
             String stat = onlineState ? "Онлайн" : "Оффлайн";
             return "Датчик: " + sensorName + '\n' +

@@ -61,7 +61,7 @@
                                           <Insets />
                                       </opaqueInsets>
                                   </Slider>
-                                 <Label fx:id="label_slider" prefHeight="17.0" prefWidth="47.0" text="1 м" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 <TextField fx:id="label_slider" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               </children>
                            </GridPane>
                         </children>
